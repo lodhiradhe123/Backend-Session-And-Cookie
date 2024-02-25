@@ -1,19 +1,33 @@
 var express = require("express");
 var router = express.Router();
+const userModel = require("./users");
 
 router.get("/", function (req, res) {
-  res.cookie("age", 24);
   res.render("index");
 });
 
-router.get("/read", function (req, res) {
-  console.log("req.cookies.age");
-  res.send("check");
+// create
+router.get("/create", async function (req, res) {
+  const create = await userModel.create({
+    username: "harsh",
+    name: "harsh",
+    age: 24,
+  });
+  res.send(create);
 });
 
-router.get("/delete", function (req, res) {
-  res.clearCookie("age");
-  res.send("cookie clear ho gai ");
+// read
+router.get("/read", async function (req, res) {
+  const read = await userModel.find();
+  res.send(read);
+});
+
+// create
+router.get("/delete", async function (req, res) {
+  const deleteuser = await userModel.findOneDelete({
+    username: "harsh",
+  });
+  res.send(deleteuser);
 });
 
 module.exports = router;
